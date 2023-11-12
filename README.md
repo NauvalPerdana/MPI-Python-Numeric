@@ -24,7 +24,7 @@ Laporan ini menjelaskan langkah-langkah pembuatan master dan slave, konfigurasi 
 5. Code Bubble Sort Python
 
 ## Topologi Bridged
-![Topologi]()
+![Topologi](https://github.com/NauvalPerdana/MPI-Numerik/blob/main/Topologi.png)
 
 ## Pembuatan Master dan Slave
 
@@ -170,5 +170,5 @@ Laporan ini menjelaskan langkah-langkah pembuatan master dan slave, konfigurasi 
     ```bash
     mpirun -np 3 -hosts master,slave1,slave2 python3 num.py
     ```
-   ![Output]()
+   ![Output](https://github.com/NauvalPerdana/MPI-Numerik/blob/main/output.png)
    Hasil eksekusi akan ditampilkan dengan runtime yang diukur.
