@@ -111,13 +111,18 @@ This guide outlines the steps to create a master and slave, configure SSH, confi
     ```
 
 ## Running Python Code
-1. Navigate to the numeric directory:
+1. Create a new Python file:
     ```bash
-    cd numeric
+    touch /home/mpiuser/numeric/num.py
     ```
-2. Edit the Python file (e.g., `num.py`) with numeric code.
+2. Navigate to that directory and edit the Python file:
+    ```bash
+    cd /home/mpiuser/numeric
+    nano num.py
+    ```
+    Then create the Python Numric code. Save by pressing `CTRL + X` and then press `Y`.
    [num.py code](https://github.com/NauvalPerdana/MPI-Numerik/blob/main/num.py)
-3. Run the Python code with MPI:
+4. Run the Python code with MPI:
     ```bash
     mpirun -np 3 -hosts master,slave1,slave2 python3 num.py
     ```
