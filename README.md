@@ -28,9 +28,9 @@ This guide outlines the steps to create a master and slave, configure SSH, confi
 ![Topology](https://github.com/NauvalPerdana/MPI-Numerik/blob/main/Topologi.png)
 
 ## Creating Master and Slave
-1. Ensure that each master and slave uses a Network Bridge Adapter and is connected to the internet.
+1. Ensure each master and slave uses a Network Bridge Adapter and is connected to the internet.
 2. Determine which device will be the master, slave1, slave2, and slave3.
-3. Create a new user with the following command on the master and each slave:
+3. Create a new user on the master and each slave:
     ```bash
     sudo adduser mpiuser
     ```
@@ -39,7 +39,7 @@ This guide outlines the steps to create a master and slave, configure SSH, confi
     sudo usermod -aG sudo mpiuser
     ```
     Repeat the above steps for each slave.
-5. Log in to the server with the user `mpiuser`:
+5. Log in to each server with the user `mpiuser`:
     ```bash
     su - mpiuser
     ```
@@ -59,7 +59,7 @@ This guide outlines the steps to create a master and slave, configure SSH, confi
     ```bash
     ssh-keygen -t rsa
     ```
-3. Copy the public key to each slave. Use the following command in the `.ssh` directory:
+3. Copy the public key to each slave using the following command in the `.ssh` directory:
     ```bash
     cd .ssh
     cat id_rsa.pub | ssh mpiuser@slave1 "mkdir .ssh; cat >> .ssh/authorized_keys"
@@ -75,7 +75,7 @@ This guide outlines the steps to create a master and slave, configure SSH, confi
     ```bash
     sudo apt install nfs-kernel-server
     ```
-3. Configure the `/etc/export` file on the master. Add the following line at the end of the file:
+3. Configure the `/etc/exports` file on the master. Add the following line at the end of the file:
     ```plaintext
     /home/mpiuser/numeric *(rw,sync,no_root_squash,no_subtree_check)
     ```
