@@ -34,7 +34,6 @@ This guide outlines the steps to create a master and slave, configure SSH, confi
     ```bash
     sudo adduser mpiuser
     ```
-    Replace 'master' with 'slave1', 'slave2', and so on for each slave.
 4. Grant root access with the command:
     ```bash
     sudo usermod -aG sudo mpiuser
