@@ -1,110 +1,107 @@
-# MPI-Numerik
-# Panduan Pembuatan Master dan Slave untuk Open MPI pada Ubuntu Desktop
+# MPI-Numerics
+## Guide to Creating Master and Slave for Open MPI on Ubuntu Desktop
 
-Laporan ini menjelaskan langkah-langkah pembuatan master dan slave, konfigurasi SSH, konfigurasi NFS, instalasi MPI, dan langkah-langkah terkait untuk menjalankan kodingan numerik pada Ubuntu Desktop.
+This guide outlines the steps to create a master and slave, configure SSH, configure NFS, install MPI, and the related steps to run numeric code on Ubuntu Desktop.
 
-## Daftar Isi
-- [Device dan Tools yang Perlu Disiapkan](#device-dan-tools-yang-perlu-disiapkan)
-- [Topologi Bridged](#topologi-bridged)
-- [Pembuatan Master dan Slave](#pembuatan-master-dan-slave)
-- [Konfigurasi SSH](#konfigurasi-ssh)
-- [Konfigurasi NFS](#konfigurasi-nfs)
-- [Instalasi MPI](#instalasi-mpi)
-- [Running Code Python](#running-code-python)
+## Table of Contents
+- [Devices and Tools to Prepare](#devices-and-tools-to-prepare)
+- [Bridged Topology](#bridged-topology)
+- [Creating Master and Slave](#creating-master-and-slave)
+- [SSH Configuration](#ssh-configuration)
+- [NFS Configuration](#nfs-configuration)
+- [MPI Installation](#mpi-installation)
+- [Running Python Code](#running-python-code)
 
-## Device dan Tools yang Perlu Disiapkan
+## Devices and Tools to Prepare
 1. Ubuntu Desktop
    - Ubuntu Desktop Master
    - Ubuntu Desktop Slave 1
    - Ubuntu Desktop Slave 2
    - Ubuntu Desktop Slave 3
-2. MPI (Master dan Slave)
-3. SSH (Master dan Slave)
-4. NFS (Master dan Slave)
-5. Code Bubble Sort Python
+2. MPI (Master and Slave)
+3. SSH (Master and Slave)
+4. NFS (Master and Slave)
+5. Python Numeric Code
 
-## Topologi Bridged
-![Topologi](https://github.com/NauvalPerdana/MPI-Numerik/blob/main/Topologi.png)
+## Bridged Topology
+![Topology](https://github.com/NauvalPerdana/MPI-Numerik/blob/main/Topologi.png)
 
-## Pembuatan Master dan Slave
-
-1. Pastikan setiap master dan slave menggunakan Network Bridge Adapter dan terhubung ke internet.
-2. Tentukan perangkat mana yang akan dijadikan master, slave1, slave2, dan slave3.
-3. Buat user baru dengan perintah berikut pada master dan setiap slave:
+## Creating Master and Slave
+1. Ensure that each master and slave uses a Network Bridge Adapter and is connected to the internet.
+2. Determine which device will be the master, slave1, slave2, and slave3.
+3. Create a new user with the following command on the master and each slave:
 
     ```bash
     sudo adduser mpiuser
     ```
 
-    Gantilah bagian 'master' menjadi 'slave1', 'slave2', dan seterusnya untuk slave.
+    Replace 'master' with 'slave1', 'slave2', and so on for each slave.
 
-4. Berikan akses kepada root dengan perintah:
+4. Grant root access with the command:
 
     ```bash
     sudo usermod -aG sudo mpiuser
     ```
 
-    Lakukan langkah di atas untuk setiap slave dengan mengganti pengguna 'master' menjadi 'slave1', 'slave2', dan seterusnya.
+    Repeat the above steps for each slave, replacing 'master' with 'slave1', 'slave2', and so on.
 
-5. Masuk ke server dengan pengguna `mpiuser`:
+5. Log in to the server with the user `mpiuser`:
 
     ```bash
     su - mpiuser
     ```
 
-6. Update Ubuntu Desktop dan install tools:
+6. Update Ubuntu Desktop and install tools:
 
     ```bash
     sudo apt update && sudo apt upgrade
     sudo apt install net-tools vim
     ```
 
-7. Konfigurasi file `/etc/hosts` pada master, slave1, slave2, dan slave3. Daftarkan IP dan hostname masing-masing komputer.
+7. Configure the `/etc/hosts` file on the master, slave1, slave2, and slave3. Register the IP and hostname of each computer.
 
-## Konfigurasi SSH
-
-1. Install OpenSSH pada master dan semua slave:
+## SSH Configuration
+1. Install OpenSSH on the master and all slaves:
 
     ```bash
     sudo apt install openssh-server
     ```
 
-2. Generate key pada master:
+2. Generate a key on the master:
 
     ```bash
     ssh-keygen -t rsa
     ```
 
-3. Copy key public ke setiap slave. Gunakan perintah berikut pada direktori `.ssh`:
+3. Copy the public key to each slave. Use the following command in the `.ssh` directory:
 
     ```bash
     cd .ssh
     cat id_rsa.pub | ssh mpiuser@slave1 "mkdir .ssh; cat >> .ssh/authorized_keys"
     ```
 
-    Ulangi perintah di atas untuk setiap slave.
+    Repeat the command for each slave.
 
-## Konfigurasi NFS
-
-1. Buat shared folder pada master dan setiap slave:
+## NFS Configuration
+1. Create a shared folder on the master and each slave:
 
     ```bash
     mkdir numeric
     ```
 
-2. Install NFS pada master:
+2. Install NFS on the master:
 
     ```bash
     sudo apt install nfs-kernel-server
     ```
 
-3. Konfigurasi file `/etc/export` pada master. Tambahkan baris berikut pada akhir file:
+3. Configure the `/etc/export` file on the master. Add the following line at the end of the file:
 
     ```plaintext
     /home/mpiuser/numeric *(rw,sync,no_root_squash,no_subtree_check)
     ```
 
-    Lokasi Shared Folder adalah direktori tempat file numeric di atas dibuat.
+    The Shared Folder location is the directory where the numeric file was created above.
 
 4. Restart NFS Server:
 
@@ -113,56 +110,54 @@ Laporan ini menjelaskan langkah-langkah pembuatan master dan slave, konfigurasi 
     sudo systemctl restart nfs-kernel-server
     ```
 
-5. Install NFS pada setiap slave:
+5. Install NFS on each slave:
 
     ```bash
     sudo apt install nfs-common
     ```
 
-6. Mount shared folder dari master ke setiap slave:
+6. Mount the shared folder from the master to each slave:
 
     ```bash
     sudo mount master:/home/mpiuser/numeric /home/mpiuser/numeric
     ```
 
-    Ulangi perintah di atas untuk setiap slave.
+    Repeat the command for each slave.
 
-## Instalasi MPI
-
-1. Install Open MPI pada master dan semua slave:
+## MPI Installation
+1. Install Open MPI on the master and all slaves:
 
     ```bash
     sudo apt install openmpi-bin libopenmpi-dev
     ```
 
-2. Install library MPI melalui pip:
+2. Install the MPI library via pip:
 
     ```bash
     sudo apt install python3-pip
     pip install mpi4py
     ```
 
-3. Install Numpy pada master dan setiap slave:
+3. Install Numpy on the master and each slave:
 
     ```bash
     pip3 install numpy
     ```
 
-## Running Code Python
-
-1. Buka direktori numeric:
+## Running Python Code
+1. Navigate to the numeric directory:
 
     ```bash
     cd numeric
     ```
 
-2. Edit file Python (misalnya `num.py`) dengan code numerik.
+2. Edit the Python file (e.g., `num.py`) with numeric code.
    [num.py code](https://github.com/NauvalPerdana/MPI-Numerik/blob/main/num.py)
 
-3. Jalankan code Python dengan MPI:
+3. Run the Python code with MPI:
 
     ```bash
     mpirun -np 3 -hosts master,slave1,slave2 python3 num.py
     ```
    ![Output](https://github.com/NauvalPerdana/MPI-Numerik/blob/main/output.png)
-   Hasil eksekusi akan ditampilkan dengan runtime yang diukur.
+   The execution result will be displayed with the measured runtime.
