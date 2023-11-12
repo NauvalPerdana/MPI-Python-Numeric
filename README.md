@@ -159,13 +159,7 @@ Laporan ini menjelaskan langkah-langkah pembuatan master dan slave, konfigurasi 
 2. Edit file Python (misalnya `num.py`) dengan code numerik.
    [num.py code](https://github.com/NauvalPerdana/MPI-Numerik/blob/main/num.py)
 
-3. Jalankan kodingan Python tanpa MPI:
-
-    ```bash
-    python3 num.py
-    ```
-
-4. Jalankan kodingan Python dengan MPI:
+3. Jalankan code Python dengan MPI:
 
     ```bash
     mpirun -np 3 -hosts master,slave1,slave2 python3 num.py
