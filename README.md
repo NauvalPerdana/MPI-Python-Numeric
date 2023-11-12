@@ -122,5 +122,5 @@ This guide outlines the steps to create a master and slave, configure SSH, confi
     ```bash
     mpirun -np 3 -hosts master,slave1,slave2 python3 num.py
     ```
-   ![Output](https://github.com/NauvalPerdana/MPI-Numerik/blob/main/output.png)
+   ![Output](https://github.com/NauvalPerdana/MPI-Python-Numeric/blob/main/output.png)
    The execution result will be displayed with the measured runtime.
