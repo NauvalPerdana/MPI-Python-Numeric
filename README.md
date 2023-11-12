@@ -1,6 +1,6 @@
 # MPI-Numerics
 
-## Guide to Creating Master and Slave for Open MPI on Ubuntu Desktop
+## Guide to Creating Master and Slave for Open MPI with Numeric Python Code on Ubuntu Desktop
 
 This guide outlines the steps to create a master and slave, configure SSH, configure NFS, install MPI, and the related steps to run numeric code on Ubuntu Desktop.
 
