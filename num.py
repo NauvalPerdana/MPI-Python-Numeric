@@ -58,5 +58,5 @@ def main():
         print(final_result)
         print("\nRuntime: {} seconds".format(end_time - start_time))
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
